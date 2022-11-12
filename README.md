@@ -6,6 +6,8 @@
 #### 在app目录下的build.gradle的dependencies中添加如下引用：
 
     compile 'com.androidkun:XTabLayout:1.1.5'
+//新增 setSelectedTabIndicatorDrawable() 优先于 setSelectedTabIndicatorColor()
+    compile 'com.mhy.ui:XTabLayout:1.0.0'
     
 ### 2.在布局文件中设置XTabLayout属性
 

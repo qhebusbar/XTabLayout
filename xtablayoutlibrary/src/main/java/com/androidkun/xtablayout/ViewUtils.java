@@ -33,11 +33,17 @@ class ViewUtils {
 
     private interface ViewUtilsImpl {
         void setBoundsViewOutlineProvider(View view);
+        void setRoundRectViewOutlineProvider(View view,int radius);
     }
 
     private static class ViewUtilsImplBase implements ViewUtilsImpl {
         @Override
         public void setBoundsViewOutlineProvider(View view) {
+            // no-op
+        }
+
+        @Override
+        public void setRoundRectViewOutlineProvider(View view, int radius) {
             // no-op
         }
     }
@@ -46,6 +52,11 @@ class ViewUtils {
         @Override
         public void setBoundsViewOutlineProvider(View view) {
             ViewUtilsLollipop.setBoundsViewOutlineProvider(view);
+        }
+
+        @Override
+        public void setRoundRectViewOutlineProvider(View view, int radius) {
+            ViewUtilsLollipop.setRoundRectViewOutlineProvider(view,radius);
         }
     }
 
@@ -62,6 +73,9 @@ class ViewUtils {
 
     static void setBoundsViewOutlineProvider(View view) {
         IMPL.setBoundsViewOutlineProvider(view);
+    }
+    static void setRoundRectViewOutlineProvider(View view,int r) {
+        IMPL.setRoundRectViewOutlineProvider(view,r);
     }
 
     static ValueAnimatorCompat createAnimator() {

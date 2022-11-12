@@ -16,15 +16,17 @@
 
 package com.androidkun.xtablayout;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.support.design.R;
+import com.google.android.material.R;
 
 class ThemeUtils {
 
     private static final int[] APPCOMPAT_CHECK_ATTRS = { R.attr.colorPrimary };
 
     static void checkAppCompatTheme(Context context) {
+        @SuppressLint("ResourceType")
         TypedArray a = context.obtainStyledAttributes(APPCOMPAT_CHECK_ATTRS);
         final boolean failed = !a.hasValue(0);
         if (a != null) {

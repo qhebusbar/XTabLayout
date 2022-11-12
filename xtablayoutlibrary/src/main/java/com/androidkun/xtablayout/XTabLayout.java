@@ -1,5 +1,12 @@
 package com.androidkun.xtablayout;
 
+import static android.R.attr.maxWidth;
+import static androidx.appcompat.widget.AppCompatDrawableManager.get;
+import static androidx.viewpager.widget.ViewPager.SCROLL_STATE_DRAGGING;
+import static androidx.viewpager.widget.ViewPager.SCROLL_STATE_IDLE;
+import static androidx.viewpager.widget.ViewPager.SCROLL_STATE_SETTLING;
+
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -14,32 +21,15 @@ import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.support.annotation.ColorInt;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.IntDef;
-import android.support.annotation.LayoutRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.StringRes;
-import android.support.design.widget.TabLayout;
-import android.support.v4.util.Pools;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewCompat;
-import android.support.v4.view.ViewPager;
-import android.support.v4.widget.TextViewCompat;
-import android.support.v7.app.ActionBar;
 import android.text.Layout;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
-import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
@@ -49,7 +39,24 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.ColorInt;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.IntDef;
+import androidx.annotation.LayoutRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
+import androidx.appcompat.app.ActionBar;
+import androidx.core.content.ContextCompat;
+import androidx.core.util.Pools;
+import androidx.core.view.GravityCompat;
+import androidx.core.view.ViewCompat;
+import androidx.core.widget.TextViewCompat;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
+
 import com.androidkun.xtablayoutlibrary.R;
+import com.google.android.material.tabs.TabLayout;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -58,17 +65,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import static android.R.attr.maxWidth;
-import static android.support.v4.view.ViewPager.SCROLL_STATE_DRAGGING;
-import static android.support.v4.view.ViewPager.SCROLL_STATE_IDLE;
-import static android.support.v4.view.ViewPager.SCROLL_STATE_SETTLING;
-import static android.support.v7.widget.AppCompatDrawableManager.get;
-
 /**
  * Created by Kun on 2016/12/20.
  * GitHub: https://github.com/AndroidKun
  * CSDN: http://blog.csdn.net/a1533588867
- * Description:
+ * Change Log : 2022-11-11
+ * Description:指示器增加可设置drawable 优先级高于color
  */
 
 public class XTabLayout extends HorizontalScrollView {
@@ -253,6 +255,7 @@ public class XTabLayout extends HorizontalScrollView {
         mTabStrip.setmSelectedIndicatorRoundY(
                 a.getDimensionPixelSize(R.styleable.XTabLayout_xTabIndicatorRoundY, 0));
         mTabStrip.setSelectedIndicatorColor(a.getColor(R.styleable.XTabLayout_xTabIndicatorColor, 0));
+        mTabStrip.setSelectedIndicatorDrawable(a.getDrawable(R.styleable.XTabLayout_xTabIndicatorDrawable));
 
         mTabPaddingStart = mTabPaddingTop = mTabPaddingEnd = mTabPaddingBottom = a
                 .getDimensionPixelSize(R.styleable.XTabLayout_xTabPadding, 0);
@@ -399,6 +402,14 @@ public class XTabLayout extends HorizontalScrollView {
      */
     public void setSelectedTabIndicatorColor(@ColorInt int color) {
         mTabStrip.setSelectedIndicatorColor(color);
+    }
+
+    /**
+     * Sets the tab 's drawable for the currently selected tab.
+     * @param indicatorDrawable drawable to use for the indicator
+     */
+    public void setSelectedTabIndicatorDrawable(Drawable indicatorDrawable) {
+        mTabStrip.setSelectedIndicatorDrawable(indicatorDrawable);
     }
 
     /**
@@ -713,7 +724,6 @@ public class XTabLayout extends HorizontalScrollView {
 
     /**
      * Sets the text colors for the different states (normal, selected) used for the tabs.
-     *
      */
     public void setTabTextColors(int normalColor, int selectedColor) {
         setTabTextColors(createColorStateList(normalColor, selectedColor));
@@ -967,7 +977,7 @@ public class XTabLayout extends HorizontalScrollView {
         if (MeasureSpec.getMode(widthMeasureSpec) != MeasureSpec.UNSPECIFIED) {
             // If we don't have an unspecified width spec, use the given size to calculate
             // the max tab width
-            Log.w("BBB", "specWidth:" + specWidth);
+           // Log.w("BBB", "specWidth:" + specWidth);
             if (mPagerAdapter != null && xTabDisplayNum != 0) {
                 if (mPagerAdapter.getCount() == 1 || xTabDisplayNum == 1) {
                     WindowManager wm = (WindowManager) getContext()
@@ -1320,12 +1330,17 @@ public class XTabLayout extends HorizontalScrollView {
          * @param resId A resource ID referring to the icon that should be displayed
          * @return The current instance for call chaining
          */
+        @SuppressLint("RestrictedApi")
         @NonNull
         public XTabLayout.Tab setIcon(@DrawableRes int resId) {
             if (mParent == null) {
                 throw new IllegalArgumentException("Tab not attached to a TabLayout");
             }
-            return setIcon(get().getDrawable(mParent.getContext(), resId));
+            try {
+                return setIcon(get().getDrawable(mParent.getContext(), resId));
+            } catch (Exception e) {
+                return setIcon(ContextCompat.getDrawable(mParent.getContext(), resId));
+            }
         }
 
         /**
@@ -1779,6 +1794,7 @@ public class XTabLayout extends HorizontalScrollView {
         private int mSelectedIndicatorRoundX;
         private int mSelectedIndicatorRoundY;
         private final Paint mSelectedIndicatorPaint;
+        private Drawable mSelectedIndicatorDrawable;
 
         private int mSelectedPosition = -1;
         private float mSelectionOffset;
@@ -1797,6 +1813,13 @@ public class XTabLayout extends HorizontalScrollView {
         void setSelectedIndicatorColor(int color) {
             if (mSelectedIndicatorPaint.getColor() != color) {
                 mSelectedIndicatorPaint.setColor(color);
+                ViewCompat.postInvalidateOnAnimation(this);
+            }
+        }
+
+        void setSelectedIndicatorDrawable(Drawable drawable) {
+            if (mSelectedIndicatorDrawable != drawable) {
+                mSelectedIndicatorDrawable = drawable;
                 ViewCompat.postInvalidateOnAnimation(this);
             }
         }
@@ -2081,17 +2104,22 @@ public class XTabLayout extends HorizontalScrollView {
                 //绘制指示器
                 RectF rect = new RectF(mIndicatorLeft, getHeight() - mSelectedIndicatorHeight,
                         mIndicatorRight, getHeight());
-                int roundX = 0;
-                int roundY = 0;
-                if (mSelectedIndicatorRoundX > 0) {
-                    roundX = dpToPx(mSelectedIndicatorRoundX);
-                }
-                if (mSelectedIndicatorRoundY > 0) {
-                    roundY = dpToPx(mSelectedIndicatorRoundY);
-                }
-                canvas.drawRoundRect(rect, roundX, roundY, mSelectedIndicatorPaint);
+                if (mSelectedIndicatorDrawable == null) {
+                    int roundX = 0;
+                    int roundY = 0;
+                    if (mSelectedIndicatorRoundX > 0) {
+                        roundX = dpToPx(mSelectedIndicatorRoundX);
+                    }
+                    if (mSelectedIndicatorRoundY > 0) {
+                        roundY = dpToPx(mSelectedIndicatorRoundY);
+                    }
+                    canvas.drawRoundRect(rect, roundX, roundY, mSelectedIndicatorPaint);
 //                canvas.drawRect(mIndicatorLeft, getHeight() - mSelectedIndicatorHeight,
 //                        mIndicatorRight, getHeight(), mSelectedIndicatorPaint);
+                } else {
+                    mSelectedIndicatorDrawable.setBounds((int) rect.left, (int) rect.top, (int) rect.right, (int) rect.bottom);
+                    mSelectedIndicatorDrawable.draw(canvas);
+                }
             }
         }
     }

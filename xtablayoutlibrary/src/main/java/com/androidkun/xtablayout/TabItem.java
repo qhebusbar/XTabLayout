@@ -16,10 +16,11 @@
 
 package com.androidkun.xtablayout;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.support.design.widget.TabLayout;
-import android.support.v7.widget.TintTypedArray;
+import com.google.android.material.tabs.TabLayout;
+import androidx.appcompat.widget.TintTypedArray;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -33,6 +34,7 @@ import com.androidkun.xtablayoutlibrary.R;
  *
  * @see TabLayout
  */
+@SuppressLint("RestrictedApi")
 public final class TabItem extends View {
     final CharSequence mText;
     final Drawable mIcon;

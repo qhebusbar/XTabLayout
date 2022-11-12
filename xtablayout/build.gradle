@@ -1,7 +1,9 @@
-apply plugin: 'com.android.library'
+plugins {
+    id 'com.android.library'
+}
 apply plugin: 'maven-publish'
 def GROUP_ID = 'com.mhy.ui'
-def ARTIFACT_ID = "xtablayout"
+def ARTIFACT_ID = "tablayout"
 def VERSION_NAME = '0.0.1'
 //artifactory私库直接执行这里
 afterEvaluate {
@@ -27,35 +29,32 @@ afterEvaluate {
         }
     }
 }
-
 android {
-    compileSdkVersion 28
+    namespace 'com.mhy.tablayout'
+    compileSdkVersion 32
 
     defaultConfig {
-        minSdkVersion 14
-        targetSdkVersion 28
-        versionCode 1
-        versionName "1.0"
+        minSdkVersion 21
+        targetSdkVersion 32
 
+        consumerProguardFiles "consumer-rules.pro"
     }
+
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    lintOptions {
-        abortOnError false
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
-
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation 'androidx.appcompat:appcompat:1.0.0'
     implementation 'com.google.android.material:material:1.0.0'
-   // implementation 'androidx.viewpager:viewpager:1.0.0'
 
 }
-

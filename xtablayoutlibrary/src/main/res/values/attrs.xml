@@ -7,6 +7,7 @@
         <attr name="xTabIndicatorRoundX" format="dimension"/>
         <attr name="xTabIndicatorRoundY" format="dimension"/>
         <attr name="xTabIndicatorColor" format="color"/>
+        <attr name="xTabIndicatorDrawable" format="reference|color"/>
         <attr name="xTabPadding" format="dimension"/>
         <attr name="xTabPaddingStart" format="dimension"/>
         <attr name="xTabPaddingTop" format="dimension"/>
