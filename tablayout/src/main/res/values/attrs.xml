@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    sources>
     <declare-styleable name="XTabLayout">
     <attr name="tabIndicatorWidth" format="dimension"/>
     <attr name="tabIndicatorDrawable" format="reference"/>

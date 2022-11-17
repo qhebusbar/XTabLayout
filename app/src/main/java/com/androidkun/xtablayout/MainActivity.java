@@ -27,12 +27,12 @@ public class MainActivity extends AppCompatActivity {
         List<String> titles = new ArrayList<>();
         titles.add("一本");
         titles.add("二本");
-        titles.add("三A");
-        titles.add("三B");
-        titles.add("一本");
-        titles.add("二本");
-        titles.add("三A");
-        titles.add("三B");
+//        titles.add("三A");
+//        titles.add("三B");
+//        titles.add("一本");
+//        titles.add("二本");
+//        titles.add("三A");
+//        titles.add("三B");
         for (int i = 0; i < titles.size(); i++) {
             if(i%2==0){
                 fragments.add(new Fragment2());
@@ -57,6 +57,10 @@ public class MainActivity extends AppCompatActivity {
         //给TabLayout设置适配器
         tabLayout3.setupWithViewPager(viewPager);
 //        tabLayout3.setIndicator(R.drawable.ic_indicator,32);
+
+        final MTabLayout tabLayout4 = findViewById(R.id.xTablayout4);
+        //给TabLayout设置适配器
+        tabLayout4.setupWithViewPager(viewPager);
     }
 
     private float dip2px(Context mContext, float size) {

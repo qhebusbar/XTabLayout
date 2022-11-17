@@ -406,6 +406,7 @@ public class XTabLayout extends HorizontalScrollView {
 
     /**
      * Sets the tab 's drawable for the currently selected tab.
+     *
      * @param indicatorDrawable drawable to use for the indicator
      */
     public void setSelectedTabIndicatorDrawable(Drawable indicatorDrawable) {
@@ -977,7 +978,7 @@ public class XTabLayout extends HorizontalScrollView {
         if (MeasureSpec.getMode(widthMeasureSpec) != MeasureSpec.UNSPECIFIED) {
             // If we don't have an unspecified width spec, use the given size to calculate
             // the max tab width
-           // Log.w("BBB", "specWidth:" + specWidth);
+            // Log.w("BBB", "specWidth:" + specWidth);
             if (mPagerAdapter != null && xTabDisplayNum != 0) {
                 if (mPagerAdapter.getCount() == 1 || xTabDisplayNum == 1) {
                     WindowManager wm = (WindowManager) getContext()
@@ -1513,9 +1514,11 @@ public class XTabLayout extends HorizontalScrollView {
                 }
                 mTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, mTabTextSize);
                 if (xTabTextBold) {
-                    mTextView.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+//                    mTextView.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+                    mTextView.getPaint().setTypeface(Typeface.DEFAULT_BOLD);
                 } else {
-                    mTextView.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+//                    mTextView.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+                    mTextView.getPaint().setTypeface(Typeface.DEFAULT);
                 }
             }
             if (changed && selected) {
@@ -1530,9 +1533,17 @@ public class XTabLayout extends HorizontalScrollView {
                     if (mTabSelectedTextSize != 0) {
                         mTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, mTabSelectedTextSize);
                         if (xTabTextSelectedBold) {
-                            mTextView.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+//                            mTextView.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+//                            mTextView.getPaint().setFakeBoldText(true);
+// 方法 1：setTypeface (Typeface tf)
+//                            mTextView.setTypeface(Typeface.DEFAULT_BOLD);
+// 方法 2：要保留原来的属性，使用 setTypeface(Typeface tf, int style)
+//                            mTextView.setTypeface(mTextView.getTypeface(), Typeface.BOLD);
+                            //如果提供的字体没有预存在指定样式的 bits 中，则使用“Paint”进行算法绘制
+                            mTextView.getPaint().setTypeface(Typeface.DEFAULT_BOLD);
                         } else {
-                            mTextView.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+//                            mTextView.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+                            mTextView.getPaint().setTypeface(Typeface.DEFAULT);
                         }
                     }
                 }

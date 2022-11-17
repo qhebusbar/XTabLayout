@@ -1,2 +1,2 @@
 include ':app', ':xtablayoutlibrary'
-include ':xtablayout'
+include ':tablayout'

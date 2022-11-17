@@ -4,7 +4,7 @@ plugins {
 apply plugin: 'maven-publish'
 def GROUP_ID = 'com.mhy.ui'
 def ARTIFACT_ID = "tablayout"
-def VERSION_NAME = '0.0.1'
+def VERSION_NAME = '0.0.2'
 //artifactory私库直接执行这里
 afterEvaluate {
     publishing {
@@ -55,6 +55,6 @@ android {
 dependencies {
 
     implementation 'androidx.appcompat:appcompat:1.0.0'
-    implementation 'com.google.android.material:material:1.0.0'
+    implementation 'com.google.android.material:material:1.0.0' //高版本setSelectedTabIndicator()方法失效,只能xml shape
 
 }
