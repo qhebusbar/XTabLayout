@@ -70,6 +70,7 @@ import java.util.List;
  * GitHub: https://github.com/AndroidKun
  * CSDN: http://blog.csdn.net/a1533588867
  * Change Log : 2022-11-11
+ * TabLayout里的SlidingTabStrip的横向线性布局 下划线被画出来的
  * Description:指示器增加可设置drawable 优先级高于color
  */
 
@@ -250,6 +251,10 @@ public class XTabLayout extends HorizontalScrollView {
                 a.getDimensionPixelSize(R.styleable.XTabLayout_xTabIndicatorHeight, dpToPx(2)));
         mTabStrip.setmSelectedIndicatorWidth(
                 a.getDimensionPixelSize(R.styleable.XTabLayout_xTabIndicatorWidth, 0));
+        mTabStrip.setIndictBottomOffset(
+                a.getDimensionPixelSize(R.styleable.XTabLayout_xTabIndicatorBottomOffset, 0));
+        mTabStrip.setIndictHorizonOffset(
+                a.getDimensionPixelSize(R.styleable.XTabLayout_xTabIndicatorHorizonOffset, 0));
         mTabStrip.setmSelectedIndicatorRoundX(
                 a.getDimensionPixelSize(R.styleable.XTabLayout_xTabIndicatorRoundX, 0));
         mTabStrip.setmSelectedIndicatorRoundY(
@@ -1812,6 +1817,14 @@ public class XTabLayout extends HorizontalScrollView {
 
         private int mIndicatorLeft = -1;
         private int mIndicatorRight = -1;
+        /**
+         * 下划线底部偏移
+         */
+        private int indictBottomOffset = 0;
+        /**
+         * 下划线横向偏移
+         */
+        private int indictHorizonOffset = 0;
 
         private ValueAnimatorCompat mIndicatorAnimator;
 
@@ -1819,6 +1832,21 @@ public class XTabLayout extends HorizontalScrollView {
             super(context);
             setWillNotDraw(false);
             mSelectedIndicatorPaint = new Paint();
+        }
+
+
+        void setIndictHorizonOffset(int indictOffset) {
+            if (indictHorizonOffset != indictOffset) {
+                this.indictHorizonOffset = indictOffset;
+                ViewCompat.postInvalidateOnAnimation(this);
+            }
+        }
+
+        void setIndictBottomOffset(int indictOffset) {
+            if (indictBottomOffset != indictOffset) {
+                this.indictBottomOffset = indictOffset;
+                ViewCompat.postInvalidateOnAnimation(this);
+            }
         }
 
         void setSelectedIndicatorColor(int color) {
@@ -2091,7 +2119,7 @@ public class XTabLayout extends HorizontalScrollView {
         public void draw(Canvas canvas) {
             super.draw(canvas);
 
-            // Thick colored underline below the current selection
+            // Thick colored underline below the current selection 当前所选内容下方的粗彩色下划线
             if (mIndicatorLeft >= 0 && mIndicatorRight > mIndicatorLeft) {
 
                /* int maxWidth = mIndicatorRight - mIndicatorLeft;
@@ -2112,9 +2140,13 @@ public class XTabLayout extends HorizontalScrollView {
                         mIndicatorRight -= (maxWidth - mSelectedTab.getTextWidth()) / 2;
                     }
                 }
-                //绘制指示器
-                RectF rect = new RectF(mIndicatorLeft, getHeight() - mSelectedIndicatorHeight,
-                        mIndicatorRight, getHeight());
+                //绘制指示器区域
+                /*RectF rect = new RectF(mIndicatorLeft, getHeight() - mSelectedIndicatorHeight,
+                        mIndicatorRight, getHeight());*/
+                RectF rect = new RectF(mIndicatorLeft + indictHorizonOffset,
+                        getHeight() - mSelectedIndicatorHeight - indictBottomOffset,
+                        mIndicatorRight - indictHorizonOffset,
+                        getHeight() - indictBottomOffset);
                 if (mSelectedIndicatorDrawable == null) {
                     int roundX = 0;
                     int roundY = 0;
@@ -2125,8 +2157,18 @@ public class XTabLayout extends HorizontalScrollView {
                         roundY = dpToPx(mSelectedIndicatorRoundY);
                     }
                     canvas.drawRoundRect(rect, roundX, roundY, mSelectedIndicatorPaint);
+                    //这段是源码，可以看出，它在刚刚那个横向线性布局里画了一个长方形，绘制坐标是
+                    //上方：getHeight() - mSelectedIndicatorHeight（布局高度减去设置的下划线的高度）
+                    //左边：mIndicatorLeft
+                    //右边：mIndicatorRight
+                    //下方：getHeight()
 //                canvas.drawRect(mIndicatorLeft, getHeight() - mSelectedIndicatorHeight,
 //                        mIndicatorRight, getHeight(), mSelectedIndicatorPaint);
+                    //增加距离底部偏移 和横向偏移
+                   /* canvas.drawRect(mIndicatorLeft + indictHorizonOffset,
+                            getHeight() - mSelectedIndicatorHeight - indictBottomOffset,
+                            mIndicatorRight - indictHorizonOffset,
+                            getHeight() - indictBottomOffset, mSelectedIndicatorPaint);*/
                 } else {
                     mSelectedIndicatorDrawable.setBounds((int) rect.left, (int) rect.top, (int) rect.right, (int) rect.bottom);
                     mSelectedIndicatorDrawable.draw(canvas);

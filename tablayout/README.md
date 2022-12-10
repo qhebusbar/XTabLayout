@@ -1,3 +1,4 @@
+implementation 'com.google.android.material:material:1.0.0' //高版本setSelectedTabIndicator()方法失效,只能xml shape
 
 1.仅设置指示器宽高和颜色(tabIndicatorColor)
     <com.mhy.xtablayout.XTabLayout

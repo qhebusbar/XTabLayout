@@ -1,6 +1,9 @@
 # XTabLayout——可修改选中项字体大小和指示器长度的TabLayout
 ## XTabLayout是基于design包中的TabLayout进行了功能的扩展，在保留原有功能的基础上，增加了修改选中项字体大小、修改指示器长度以及限制屏幕显示范围内显示的Tab个数。
 ![github](http://img.blog.csdn.net/20161222095719330?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvYTE1MzM1ODg4Njc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+0.0.3 增加底部偏移 横向偏移
+0.0.2 修复选中加粗生效
+0.0.1 增加下划线可设置drawable
 ## 集成步骤：
 ### 1.添加XTabLayout依赖库
 #### 在app目录下的build.gradle的dependencies中添加如下引用：

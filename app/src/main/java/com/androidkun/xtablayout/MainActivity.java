@@ -27,12 +27,12 @@ public class MainActivity extends AppCompatActivity {
         List<String> titles = new ArrayList<>();
         titles.add("一本");
         titles.add("二本");
-//        titles.add("三A");
-//        titles.add("三B");
-//        titles.add("一本");
-//        titles.add("二本");
-//        titles.add("三A");
-//        titles.add("三B");
+        titles.add("三A");
+        titles.add("三B");
+        titles.add("一本");
+        titles.add("二本");
+        titles.add("三A");
+        titles.add("三B");
         for (int i = 0; i < titles.size(); i++) {
             if(i%2==0){
                 fragments.add(new Fragment2());
