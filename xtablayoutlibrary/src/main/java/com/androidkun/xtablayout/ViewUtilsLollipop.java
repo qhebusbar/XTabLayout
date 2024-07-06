@@ -30,7 +30,7 @@ class ViewUtilsLollipop {
     }
 
     //view设置圆角
-    static void setRoundRectViewOutlineProvider(View view, int radius) {
+    static void setRoundRectViewOutlineProvider(View view, final int radius) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             view.setOutlineProvider(new ViewOutlineProvider() {
                 @Override

@@ -1,43 +1,26 @@
-plugins {
-    id 'com.android.library'
-}
-apply plugin: 'maven-publish'
+//plugins {
+//    id 'com.android.library'
+//}
+apply plugin: 'com.android.library'
+//apply plugin: 'maven-publish'
 def GROUP_ID = 'com.mhy.ui'
 def ARTIFACT_ID = "tablayout"
 def VERSION_NAME = '0.0.2'
 //artifactory私库直接执行这里
-afterEvaluate {
-    publishing {
-        publications {
-            release(MavenPublication) {
-                from components.release
-                groupId = GROUP_ID
-                artifactId = ARTIFACT_ID
-                version = VERSION_NAME
-            }
-        }
-        repositories {
-            maven {
-                allowInsecureProtocol true  // 如果MAVEN_LOCAL_PATH是http，此处必须为true，如果是https，则可以删除此项
-                name = "artifactory"  //"nexus" 配置后在Gradle > Tasks > publishing 下会显示对应的名称，容易区分
-                url = uri(MAVEN_URL)
-                credentials {
-                    username = MAVEN_USER
-                    password = MAVEN_PASSWORD
-                }
-            }
-        }
-    }
-}
+
 android {
-    namespace 'com.mhy.tablayout'
-    compileSdkVersion 32
+//    namespace 'com.mhy.tablayout'
+
+    compileSdkVersion 33
+    buildToolsVersion "30.0.2"
 
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 32
+        targetSdkVersion 30
+        versionCode 1
+        versionName VERSION_NAME
 
-        consumerProguardFiles "consumer-rules.pro"
+
     }
 
     buildTypes {
@@ -54,7 +37,7 @@ android {
 
 dependencies {
 
-    implementation 'androidx.appcompat:appcompat:1.0.0'
-    implementation 'com.google.android.material:material:1.0.0' //高版本setSelectedTabIndicator()方法失效,只能xml shape
+    compileOnly 'androidx.appcompat:appcompat:1.0.0'
+    compileOnly 'com.google.android.material:material:1.0.0' //高版本setSelectedTabIndicator()方法失效,只能xml shape
 
 }
